@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyklopsStrafeMod", "CyklopsStrafeMod\CyklopsStrafeMod.csproj", "{35457C7F-94CD-4E90-8702-E17E462EBA8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaDebug", "SubnauticaConsole\SubnauticaDebug.csproj", "{642F1253-0BCB-4088-8981-C91BB8820687}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35457C7F-94CD-4E90-8702-E17E462EBA8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35457C7F-94CD-4E90-8702-E17E462EBA8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35457C7F-94CD-4E90-8702-E17E462EBA8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35457C7F-94CD-4E90-8702-E17E462EBA8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642F1253-0BCB-4088-8981-C91BB8820687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642F1253-0BCB-4088-8981-C91BB8820687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642F1253-0BCB-4088-8981-C91BB8820687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642F1253-0BCB-4088-8981-C91BB8820687}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA2AF84A-0178-4594-A16A-5F3D9A2B75DD}
+	EndGlobalSection
+EndGlobal
