@@ -1,13 +1,19 @@
-﻿namespace pp.subnauticamods.dbg
+﻿namespace pp.SubnauticaMods.dbg
 {
-    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
-    public class TypeDrawer : System.Attribute
+    public abstract class ATypeDrawer<T> : ITypeDrawer
     {
-        public System.Type DrawObjectType;
-
-        public TypeDrawer(System.Type _objectType)
+        public object Draw(string _label, object _object)
         {
-            DrawObjectType = _objectType;
+            if (!(_object is T))
+                return Draw(_label, default(T));
+            return Draw(_label, (T) _object);
         }
+
+        protected abstract T Draw(string _label, T _object);
+    }
+
+    public interface ITypeDrawer
+    {
+        object Draw(string _label, object _object);
     }
 }

@@ -25,5 +25,20 @@ namespace pp.SubnauticaMods.dbg
             tx.Apply();
             return tx;
         }
+
+        public static void Log(string _message)
+        {
+            Debug.Log($"[SubnauticaDebug] {_message}");
+        }
+
+        public static void LogW(string _message)
+        {
+            Debug.LogWarning($"[SubnauticaDebug] {_message}");
+        }
+
+        public static void LogE(string _message)
+        {
+            Debug.LogError($"[SubnauticaDebug] {_message}");
+        }
     }
 }

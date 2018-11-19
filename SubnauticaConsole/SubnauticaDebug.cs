@@ -1,7 +1,5 @@
-﻿using plib.Util;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using UnityEngine;
 
 namespace pp.SubnauticaMods.dbg
 {
@@ -23,24 +21,12 @@ namespace pp.SubnauticaMods.dbg
         {
             if (Loaded)
             {
-                Debug.LogWarning("[Console] Already patched. Doing nothing.");
+                Util.LogW("[Console] Already patched. Doing nothing.");
                 return;
             }
 
-            if (!LoadAdditionalAssembly("plib_util.dll")) return;
-
-            L.CREATE_LOG_FILES = false;
-            L.APP_NAME = "subnautica_debug";
-            L.SetLogMethods(Debug.LogError, new System.Collections.Generic.Dictionary<ELogType, System.Action<string>>()
-            {
-                { ELogType.INFO,    Debug.Log           },
-                { ELogType.DEBUG,   Debug.Log           },
-                { ELogType.WARNING, Debug.LogWarning    },
-                { ELogType.ERROR,   Debug.LogError      }
-            });
-
             m_goBrowser = DebugPanel.CreateNew();
-            L.Log("Subnautica console intialized!");
+            Util.Log("Subnautica console intialized!");
             Loaded = true;
         }
 
@@ -53,7 +39,7 @@ namespace pp.SubnauticaMods.dbg
             }
             catch (System.Exception _e)
             {
-                Debug.LogWarning($"[Console] Failed to load dependency library({path}): {_e.Message}");
+                Util.LogW($"Failed to load dependency library({path}): {_e.Message}");
                 return false;
             }
             return true;

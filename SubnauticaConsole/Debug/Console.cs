@@ -5,8 +5,6 @@ namespace pp.SubnauticaMods.dbg
 {
     public class Console
     {
-        public const int MAX_CONSOLE_ENTRIES        = 200;
-
         private Vector2 m_consoleScroll;
         private List<ConsoleEntry> m_consoleEntries = new List<ConsoleEntry>();
 
@@ -23,14 +21,21 @@ namespace pp.SubnauticaMods.dbg
             Application.logMessageReceived -= OnLogMessage;
         }
 
+        public void Update()
+        {
+            m_drawEntries = m_consoleEntries.ToArray();
+            if (DebugPanel.Get.PanelConfig.ConsoleAutoScroll)
+                m_consoleScroll.y = float.MaxValue;
+        }
+
         public void Draw(GUIStyle _consoleStyle)
         {
             GUILayout.BeginVertical(_consoleStyle, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                 m_consoleScroll = GUILayout.BeginScrollView(m_consoleScroll);
-                m_consoleEntries.ForEach(_o =>
+                foreach(var entry in m_drawEntries)
                 {
                     _consoleStyle.normal.textColor = Color.white;
-                    switch (_o.Type)
+                    switch (entry.Type)
                     {
                         case LogType.Warning:
                             _consoleStyle.normal.textColor = Color.yellow;
@@ -42,27 +47,29 @@ namespace pp.SubnauticaMods.dbg
                     }
                     GUILayout.BeginHorizontal();
                     GUILayout.Space(5f);
-                    GUILayout.TextField($"{(DebugPanel.Get.PanelConfig.ConsoleShowType ? $"[{_o.Type}]" : "")}" +
-                        $"{(DebugPanel.Get.PanelConfig.ConsoleShowTime ? $"[{_o.Time.ToString(DebugPanel.Get.PanelConfig.ConsoleTimeFormat)}]" : "")}" +
-                        $" {_o.Message}", _consoleStyle, GUILayout.ExpandWidth(true));
+                    GUILayout.TextField($"{(DebugPanel.Get.PanelConfig.ConsoleShowType ? $"[{entry.Type}]" : "")}" +
+                        $"{(DebugPanel.Get.PanelConfig.ConsoleShowTime ? $"[{entry.Time.ToString(DebugPanel.Get.PanelConfig.ConsoleTimeFormat)}]" : "")}" +
+                        $" {entry.Message}", _consoleStyle, GUILayout.ExpandWidth(true));
                     GUILayout.Space(5f);
                     GUILayout.EndHorizontal();
-                });
+                }
                 GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 
+        public void Clear()
+        {
+            m_consoleEntries.Clear();
+        }
+
         private void OnLogMessage(string _condition, string _stackTrace, LogType _type)
         {
-            if (m_consoleEntries.Count >= MAX_CONSOLE_ENTRIES)
+            if (m_consoleEntries.Count >= DebugPanel.Get.PanelConfig.ConsoleMaxEntries)
             {
                 m_consoleEntries.RemoveAt(0);
             }
 
             m_consoleEntries.Add(new ConsoleEntry(_type, _condition, _stackTrace));
-
-            if (DebugPanel.Get.PanelConfig.ConsoleAutoScroll)
-                m_consoleScroll.y = float.MaxValue;
         }
 
         private class ConsoleEntry

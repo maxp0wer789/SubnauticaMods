@@ -22,12 +22,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>G:\Steam\steamapps\common\Subnautica\QMods\SubnauticaDebug\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -37,12 +38,6 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>G:\Steam\steamapps\common\Subnautica\Subnautica_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="plib_util">
-      <HintPath>..\..\plib\bin\plib_util.dll</HintPath>
-    </Reference>
-    <Reference Include="plib_util_unity">
-      <HintPath>..\..\plib\bin\plib_util_unity.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,10 +50,10 @@
   <ItemGroup>
     <Compile Include="Config\Config.cs" />
     <Compile Include="Debug\Browser.cs" />
-    <Compile Include="Drawer\PrimitiveDrawer.cs" />
+    <Compile Include="Drawer\Drawer.cs" />
     <Compile Include="SubnauticaDebug.cs" />
     <Compile Include="Debug\Console.cs" />
-    <Compile Include="Debug\Debug.cs" />
+    <Compile Include="Debug\DebugPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Drawer\TypeDrawer.cs" />
     <Compile Include="Util\SerializableVector.cs" />

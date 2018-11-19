@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace pp.subnauticamods.dbg.Util
+namespace pp.SubnauticaMods.dbg
 {
     [System.Serializable]
     public class SerializableVector

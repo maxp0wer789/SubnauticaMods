@@ -1,11 +1,8 @@
-﻿using plib.Util;
-using pp.subnauticamods.dbg.Util;
-using pp.SubnauticaMods.dbg;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace pp.subnauticamods.dbg.Config
+namespace pp.SubnauticaMods.dbg
 {
     [System.Serializable]
     public class Config
@@ -16,11 +13,18 @@ namespace pp.subnauticamods.dbg.Config
         public SerializableVector Position  = new SerializableVector(50f, 50f);
         public SerializableVector Size      = new SerializableVector(Screen.width * 0.5f, Screen.height * 0.5f);
 
+        public bool ConsoleVisible      = false;
         public bool ConsoleShowType     = true;
         public bool ConsoleShowTime     = true;
         public string ConsoleTimeFormat = "T";
         public int ConsoleFontSize      = 12;
         public bool ConsoleAutoScroll   = true;
+        public int ConsoleMaxEntries    = 300;
+
+        public bool BrowserShowValueChangeButtons = true;
+        public float BrowserValueButtonChangeStep = 0.01f;
+
+        public bool BrowserInspectorDebug = false;
 
         public void Save()
         {
@@ -34,7 +38,7 @@ namespace pp.subnauticamods.dbg.Config
             }
             catch (System.Exception _e)
             {
-                L.LogE("Failed to save debug panel config: " + _e.Message);
+                Util.LogE($"Failed to save debug panel config: {_e.Message}");
             }
         }
 
@@ -42,7 +46,7 @@ namespace pp.subnauticamods.dbg.Config
         {
             if(!File.Exists(ConfigFilePath))
             {
-                L.LogW("Config file does not exist. Creating new config.", "Subnautica Debug");
+                Util.LogW("Config file does not exist. Creating new config.");
                 return new Config();
             }
 
@@ -56,7 +60,7 @@ namespace pp.subnauticamods.dbg.Config
             }
             catch (System.Exception _e)
             {
-                L.LogE("Failed to load debug panel config: " + _e.Message);
+                Util.LogE($"Failed to load debug panel config: {_e.Message}");
                 return new Config();
             }
         }
