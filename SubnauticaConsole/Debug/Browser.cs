@@ -22,6 +22,8 @@ namespace pp.SubnauticaMods.dbg
 
         private GameObject[] m_rootObjects;
 
+        private bool m_paused;
+
         public static void RegisterDrawer(System.Type _type, ITypeDrawer _drawer)
         {
             if(s_typeDrawers.ContainsKey(_type))
@@ -55,6 +57,7 @@ namespace pp.SubnauticaMods.dbg
 
         public void Draw(GUIStyle _browserStyle)
         {
+
             GUILayout.BeginVertical(_browserStyle, GUILayout.MinHeight(DebugPanel.Get.Size.y * 0.5f));
 
             if (m_rootObjects != null && m_rootObjects.Length > 0)
@@ -106,6 +109,12 @@ namespace pp.SubnauticaMods.dbg
                     {
                         ReloadScenes();
                     }
+                    if(GUILayout.Button(m_paused ? "Resume" : "Pause"))
+                    {
+                        m_paused = !m_paused;
+                        Time.timeScale = m_paused ? 0f : 1f; 
+                    }
+
                     GUILayout.EndHorizontal();
 
                     m_gameObjectScroll = GUILayout.BeginScrollView(m_gameObjectScroll, GUILayout.ExpandWidth(true));

@@ -163,7 +163,7 @@ namespace pp.SubnauticaMods.dbg
 
         private void Update()
         {
-            if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
+            if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F4))
             {
                 ToggleVisibility();
             }

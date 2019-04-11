@@ -16,9 +16,18 @@ namespace pp.SubnauticaMods.Strafe
         public KeyCode StrafeLeftKey        = KeyCode.A;
         public KeyCode StrafeRightKey       = KeyCode.D;
 
-        public bool ThrottleLeft    => Input.GetKey(StrafeLeftKey);
-        public bool ThrottleRight   => Input.GetKey(StrafeRightKey);
-        public bool ModifierActive  => UseModifier && Input.GetKey(StrafeModifierKey);
+        //public KeyCode StrafeLeftButton     = KeyCode.JoystickButton4;
+        //public KeyCode StrafeRightButton    = KeyCode.JoystickButton5;
+        //public string StrafeLeftAxis        = "none";
+        //public string StrafeRightAxis       = "none";
+
+        public bool ThrottleLeft => Input.GetKey(StrafeLeftKey);//  || ControllerStrafeLeft();
+        public bool ThrottleRight => Input.GetKey(StrafeRightKey);// || ControllerStrafeRight();
+
+       // public bool IsLeftStrafeAxis    => StrafeLeftAxis != "none";
+       // public bool IsRightStrafeAxis   => StrafeRightAxis != "none";
+
+        public bool ModifierActive      => /*ControllerStrafeLeft() || ControllerStrafeRight() ||*/ (UseModifier && Input.GetKey(StrafeModifierKey));
 
         public static Config LoadConfig()
         {
@@ -61,5 +70,14 @@ namespace pp.SubnauticaMods.Strafe
             }
         }
 
+        //private bool ControllerStrafeLeft()
+        //{
+        //    return (IsLeftStrafeAxis && Input.GetAxis(StrafeLeftAxis) > 0.001f) || (StrafeLeftButton != KeyCode.None && Input.GetKey(StrafeLeftButton));
+        //}
+
+        //private bool ControllerStrafeRight()
+        //{
+        //    return (IsRightStrafeAxis && Input.GetAxis(StrafeRightAxis) > 0.001f) || (StrafeRightButton != KeyCode.None && Input.GetKey(StrafeRightButton));
+        //}
     }
 }
