@@ -6,19 +6,19 @@ namespace pp.SubnauticaMods.Strafe
     {
         public const string LOG_SOURCE = "[CyclopsStrafe]";
 
-        public static void Log(string _message)
+        public static void Log(object _message)
         {
-            Debug.Log($"{LOG_SOURCE} {_message}");
+            Debug.Log($"{LOG_SOURCE} {_message.ToString()}");
         }
 
-        public static void LogW(string _message)
+        public static void LogW(object _message)
         {
-            Debug.LogWarning($"{LOG_SOURCE} {_message}");
+            Debug.LogWarning($"{LOG_SOURCE} {_message.ToString()}");
         }
 
-        public static void LogE(string _message)
+        public static void LogE(object _message)
         {
-            Debug.LogError($"{LOG_SOURCE} {_message}");
+            Debug.LogError($"{LOG_SOURCE} {_message.ToString()}");
         }
     }
 }

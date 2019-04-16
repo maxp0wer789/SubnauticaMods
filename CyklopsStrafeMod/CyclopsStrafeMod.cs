@@ -15,9 +15,13 @@ namespace pp.SubnauticaMods.Strafe
         public static string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public readonly static CyclopsStrafeMod Get = new CyclopsStrafeMod();
 
+        private string SMLPluginPath => Path.Combine(Path.Combine(ModPath, "SML"), "cyclops_strafe_sml_plugin.dll");
+
         public static Config ModConfig;
 
         public static bool ModErrorOccurred;
+
+        private Assembly m_smlPlugin;
 
         public static void Initialize()
         {
@@ -33,21 +37,48 @@ namespace pp.SubnauticaMods.Strafe
             ModConfig = Config.LoadConfig();
             if (ModConfig == null) return;
 
-            //create settings page
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded -= OnSceneLoaded; //make sure the method is only added once to the event
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnSceneLoaded(Scene _loaded, LoadSceneMode _mode)
         {
-            if (ModErrorOccurred) return;
+            //plugin error occurred? sml plugin already loaded? incorrect scene loaded? do nothing.
+            if (ModErrorOccurred || m_smlPlugin != null || (_loaded.name != "XMenu" && _loaded.name != "Essentials")) return;
 
-            if(_loaded.name == "XMenu" || _loaded.name == "Essentials")
+            //try to find the smlhelper assembly in the current app domain
+            var ass = System.AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(_o => _o.FullName.StartsWith("SMLHelper"));
+            //if smlhelper found
+            if (ass != null)
             {
-                LoadModMenu();
+                //create settings page with smlhelper and register cyclops upgrades
+                LoadSMLPlugin();
+                return;
             }
+            //otherwise create settings page the legacy way
+            LoadModMenu();
         }
 
+        //Only called if sml is available. Loads the sml plugin for cyclops upgrade item and helper options usage
+        private void LoadSMLPlugin()
+        {
+            try
+            {
+                if (!File.Exists(SMLPluginPath)) throw new System.Exception("Could not find sml plugin dll. Please reinstall the mod.");
+                m_smlPlugin = Assembly.LoadFrom(SMLPluginPath) ?? throw new System.Exception("Failed to load sml plugin assembly!");
+                var smlPluginEntryType      = m_smlPlugin.GetExportedTypes().FirstOrDefault(_o => _o.FullName == "pp.SubnauticaMods.Strafe.SML.SMLPluginLoader") ?? throw new System.Exception("Invalid sml plugin layout. Reinstall the mod.");
+                var smlPluginEntryMethod    = smlPluginEntryType.GetMethod("LoadSMLPlugin") ?? throw new System.Exception("Invalid sml plugin layout. Reinstall the mod.");
+                smlPluginEntryMethod.Invoke(null, null);
+            }
+            catch (System.Exception _e)
+            {
+                Util.LogE("Error occurred while loading sml plugin: " + _e.Message);
+                Util.LogE("\n" + _e.StackTrace);
+                ModErrorOccurred = true;
+            }
+}
+
+        //legacy mod options loader
         private void LoadModMenu()
         {
             try
@@ -65,7 +96,7 @@ namespace pp.SubnauticaMods.Strafe
             {
                 Util.LogE("Error occurred while loading mod UI: " + _e.Message);
                 Util.LogE("\n" + _e.StackTrace);
-                CyclopsStrafeMod.ModErrorOccurred = true;
+                ModErrorOccurred = true;
             }
         }
 

@@ -6,7 +6,9 @@ namespace pp.SubnauticaMods.Strafe
     [System.Serializable]
     public class Config
     {
-        public const string CFG_FILE_NAME = "config.json";
+        public const string CFG_FILE_NAME           = "config.json";
+        private static string ConfigDirectory      => Path.Combine(Path.Combine(Application.persistentDataPath, "Mods"), "CyclopsStrafe");
+        private static string ConfigPath           => Path.Combine(ConfigDirectory, CFG_FILE_NAME);
 
         public float StrafeSpeed            = 0.5f;
 
@@ -33,9 +35,8 @@ namespace pp.SubnauticaMods.Strafe
         {
             try
             {
-                var targetFile = Path.Combine(CyclopsStrafeMod.ModPath, CFG_FILE_NAME);
-
-                if (!File.Exists(targetFile))
+                var targetFile = CheckConfigLocation();
+                if (string.IsNullOrEmpty(targetFile))
                 {
                     Util.LogW("Mod configuration could not be found. Creating...");
                     var cfg = new Config();
@@ -58,9 +59,10 @@ namespace pp.SubnauticaMods.Strafe
         {
             try
             {
-                var targetFile = Path.Combine(CyclopsStrafeMod.ModPath, CFG_FILE_NAME);
+                CheckConfigDirectory();
+
                 var data = JsonUtility.ToJson(this, true);
-                File.WriteAllText(targetFile, data);
+                File.WriteAllText(ConfigPath, data);
             }
             catch (System.Exception _e)
             {
@@ -68,6 +70,23 @@ namespace pp.SubnauticaMods.Strafe
                 Util.LogE("\n" + _e.StackTrace);
                 CyclopsStrafeMod.ModErrorOccurred = true;
             }
+        }
+
+        private void CheckConfigDirectory()
+        {
+            if(!Directory.Exists(ConfigDirectory))
+            {
+                Directory.CreateDirectory(ConfigDirectory);
+            }
+        }
+
+        private static string CheckConfigLocation()
+        {
+            if (File.Exists(ConfigPath)) return ConfigPath;
+            //Check if old configuration exists
+            var targetFile = Path.Combine(CyclopsStrafeMod.ModPath, CFG_FILE_NAME);
+            if (File.Exists(targetFile)) return targetFile;
+            return null;
         }
 
         //private bool ControllerStrafeLeft()
